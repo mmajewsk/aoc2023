@@ -17,44 +17,14 @@ for l in lines:
     hand, bid = l.split(' ')
     hands.append((hand, int(bid)))
 
-# print(hands)
-def full(x):
-    c = Counter(x)
-    if len(c.keys()) != 2:
-        return False
-    elif len(c.keys()) == 2:
-        vals = set(list(c.values()))
-        return vals == {2,3}
-    return False
-
-def three_of_a_kind(x):
-    c = Counter(x)
-    if len(c.keys()) != 3:
-        return False
-    elif len(c.keys()) == 3:
-        vals = set(list(c.values()))
-        return vals == {1,3}
-    return False
-
-def two_pair(x):
-    c = Counter(x)
-    if len(c.keys()) != 3:
-        return False
-    elif len(c.keys()) == 3:
-        vals = set(list(c.values()))
-        return vals == {1,2,2}
-    return False
 kinds_rules = {
-    # all five characters are the same
-    "Five of a kind" : lambda x: len(set(x)) == 1,
-    # four of the five characters are the same
-    "Four of a kind": lambda x: len(set(x)) == 2 and {1, 4}==set(Counter(x).values()),
-    # three of the five characters are the same, but remaining two are also the same
-    "Full house": full,
-    "Three of a kind": three_of_a_kind,
-    "Two pair" : two_pair,
+    "Five of a kind": lambda x: len(set(x)) == 1,
+    "Four of a kind": lambda x: len(set(x)) == 2 and {1, 4} == set(Counter(x).values()),
+    "Full house": lambda x: len(set(x)) == 2 and {2, 3} == set(Counter(x).values()),
+    "Three of a kind": lambda x: len(set(x)) == 3 and {1, 1, 3} == set(Counter(x).values()),
+    "Two pair": lambda x: len(set(x)) == 3 and {2, 1} == set(Counter(x).values()),
     "One pair": lambda x: len(set(x)) == 4,
-    "High card": lambda x: len(set(x)) == 5
+    "High card": lambda x: len(set(x)) == 5,
 }
 
 kinds_ordering = [
