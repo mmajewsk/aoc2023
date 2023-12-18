@@ -11,8 +11,7 @@ def data_to_path(data):
         x2 += m*length
         # area += x1.real*x2.imag - x2.real*x1.imag
         area += (x1 * x2.conjugate()).imag
-        ppl = x1-x2
-        pathlen += abs(ppl)
+        pathlen += abs(x1-x2)
         x1 = x2
     area = abs(area)
     real_area = area//2+pathlen//2+1
