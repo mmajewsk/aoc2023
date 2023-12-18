@@ -14,22 +14,16 @@ for l in day.lines:
 
 
 def data_to_path(data, p2=False):
-    path = [(0,0)]
-    a,b = 0,0
+    path = [0]
+    a = 0
     for direction, length, color in data:
         if p2 == True:
             value = int(color[2:-2], 16)
             direction = "RDLU"[int(color[-2])]
             length = value
-        if direction == "R":
-            a += int(length)
-        elif direction == "L":
-            a -= int(length)
-        elif direction == "U":
-            b += int(length)
-        elif direction == "D":
-            b -= int(length)
-        path.append((a,b))
+        m = {"R":1+0j, "L":-1+0j, "U":0+1j, "D":0-1j}[direction]
+        a += m*length
+        path.append(a)
     return path
 
 
@@ -37,14 +31,15 @@ def path_to_area(path):
     area = 0
     pathlen = 0
     for i in range(len(path)-1):
-        x1,y1 = path[i]
-        x2,y2 = path[i+1]
-        area += x1*y2 - x2*y1
-        ppl = abs(x1-x2) + abs(y1-y2)
-        pathlen += ppl
+        x1 = path[i]
+        x2 = path[i+1]
+        # area += x1.real*x2.imag - x2.real*x1.imag
+        area += (x1 * x2.conjugate()).imag
+        ppl = x1-x2
+        pathlen += abs(ppl)
     area = abs(area)
-    real_area = area- (area-pathlen-1)//2
-    return real_area
+    real_area = area//2+pathlen//2+1
+    return int(real_area)
 
 
 p1 = path_to_area(data_to_path(data))
